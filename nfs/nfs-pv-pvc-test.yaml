@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-kasten  
+spec:
+  claimRef:
+    name: pvc-nfs-kasten
+    namespace: kasten-io
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /
+    server: #replace with  nfs-server service ip (kubectl get svc -n kasten-io nfs-server)
+    readOnly: false
+  mountOptions:
+      - hard
+      - nfsvers=4.1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-nfs-kasten
+  namespace: kasten-io
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
