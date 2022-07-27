@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-app  
+  labels:
+    app: basic-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basic-app
+  template:
+    metadata:
+      labels:
+        app: basic-app
+    spec:
+      containers:
+      - name: basic-app-container
+        image: alpine:3.7 #<<<-------- to replace 
+        resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+        command: ["tail"]
+        args: ["-f", "/dev/null"]
+        securityContext:
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      serviceAccount: k10-grafana
+      serviceAccountName: k10-grafana
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: basic-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:    
+  name: basic-pvc  
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  #storageClassName: gp2-csi  
