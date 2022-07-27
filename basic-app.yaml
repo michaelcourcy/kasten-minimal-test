@@ -30,8 +30,8 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
-      serviceAccount: k10-grafana
-      serviceAccountName: k10-grafana
+      #serviceAccount: default
+      #serviceAccountName: default
       volumes:
       - name: data
         persistentVolumeClaim:
