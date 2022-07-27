@@ -24,9 +24,9 @@ spec:
               cpu: 100m
         command: ["tail"]
         args: ["-f", "/dev/null"]
-        securityContext:
-          runAsNonRoot: false
-          runAsUser: 0
+  #      securityContext:
+  #        runAsNonRoot: false
+  #        runAsUser: 0
         volumeMounts:
         - name: data
           mountPath: /data
